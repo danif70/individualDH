@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <title>Detail</title>
+</head>
+
+<body>
+   
+        <h2>User Detail</h2>
+        <% if(Array.isArray(user)) { %>
+            <% for(let i=0; i< user.length; i++) { %>
+                <div class="card">
+                    <img src="<%= user[i].img %>" alt="<%= user[i].name %>">
+                    <p>Name:<%= user[i].name %>
+                    </p>
+                    <p>Age:<%= user[i].age %>
+                    </p>
+                </div>
+                <%}%>
+        <%} else {%>
+            <div class="card">
+                <img src="<%= user.img %>" alt="<%= user.name %>">
+                <p>Name:<%= user.name %></p>
+                <p>Age:<%= user.age %></p>
+            </div>
+        <%}%>
+
+        <%- include("partials/title.ejs") %>
+</body>
+
+</html>
