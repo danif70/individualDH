@@ -35,14 +35,19 @@ const postUser = (req, res) => {
     const {
         name,
         age,
-        img,
     } = req.body;
     const newId = users[users.length - 1].id + 1;
+    // ahora la img será un file y se recibe por req.file
+    const image = req.file ? req.file.filename : '';
+    let newImage;
+    if (image.length > 0){
+        newImage = `images/usuarios/${image}`
+    }
     const obj = {
         id: newId,
         name,
         age,
-        img,
+        img: newImage,
     };
     users.push(obj);
     res.redirect('/users');
