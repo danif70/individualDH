@@ -31,6 +31,7 @@ const formNewUser = (req, res) => {
 }
 
 const postUser = (req, res) => {
+    // recordar que los datos de un form se reciben a través de req.body
     const {
         name,
         age,
@@ -47,10 +48,48 @@ const postUser = (req, res) => {
     res.redirect('/users');
 }
 
+const userEdit = (req, res) => {
+    const { id } = req.params;
+    const userEdit = users.find(elem => elem.id == id);
+    res.render(path.join(__dirname, '../views/userEdit'), { userEdit })
+}
+
+const editConfirm = (req, res) => {
+    // recordar que los datos de un form se reciben a través de req.body
+    users.forEach(elem => {
+        if (elem.id == req.body.id) {
+            elem.name = req.body.name;
+            elem.age = req.body.age;
+            elem.img = req.body.img;
+        }
+    })
+    res.redirect('/users')
+}
+const userDelete = (req, res) => {
+    const { id } = req.params;
+    const userDelete = users.find(elem => elem.id == id);
+    res.render(path.join(__dirname, '../views/userDelete'), { userDelete })
+}
+
+const deleteConfirm = (req, res) => {
+    // recordar que los datos de un form se reciben a través de req.body
+    users.forEach(elem => {
+        if (elem.id == req.body.id) {
+            const indexDelete = users[elem.id - 1]
+            users.splice((indexDelete.id - 1), 1)
+        }
+    })
+    res.redirect('/users')
+}
+
 module.exports = {
     getAllUsers,
     getUserId,
     search,
     formNewUser,
     postUser,
+    userEdit,
+    editConfirm,
+    userDelete,
+    deleteConfirm,
 };

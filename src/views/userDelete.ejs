@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Delete</title>
+</head>
+
+<body>
+    <h2>User Delete</h2>
+    <form method="POST" action="/user-delete?_method=DELETE">
+        <div>
+            <img src="<%=userDelete.img%>" alt="<%=userDelete.name%>"><br>
+        </div>
+        <div>
+            <label>ID</label>
+            <input type="text" name="id" id="" readonly="true" value="<%= userDelete.id%>">
+        </div>
+        <div>
+            <label>Name</label>
+            <input type="text" name="name" id="" value="<%= userDelete.name%>" readonly="true">
+        </div>
+        <div>
+            <label>Age</label>
+            <input type="text" name="age" id="" value="<%= userDelete.age%>" readonly="true">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
