@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New User</title>
 </head>
+
 <body>
     <h2>New User</h2>
     <form method="POST" action="/new-user" enctype="multipart/form-data">
         <div>
             <label>Name</label>
-                <input type="text" name="name" id="">
+            <input type="text" name="name" id="" value="<%=locals.values ? values.name : '' %>">
         </div>
         <div>
             <label>Age</label>
-                <input type="text" name="age" id="">
+            <input type="text" name="age" id="" value="<%=locals.values ? values.age : '' %>">
         </div>
         <div>
             <label>Avatar</label>
-                <input type="file" name="img" id="">
+            <input type="file" name="img" id="">
         </div>
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
     </form>
+    <% if (locals.errors) {%>
+        <% for( let i=0; i < errors.length; i++) {%>
+            <p><%= errors[i].msg %></p>
+        <%}%>
+    <%}%>
+
 </body>
+
 </html>

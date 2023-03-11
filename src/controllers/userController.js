@@ -1,5 +1,6 @@
 const users = require('../database/users');
 const path = require('path');
+const { validationResult } = require('express-validator');
 
 const getAllUsers = (req, res) => {
     // res.send(users)
@@ -31,26 +32,34 @@ const formNewUser = (req, res) => {
 }
 
 const postUser = (req, res) => {
-    // recordar que los datos de un form se reciben a través de req.body
-    const {
-        name,
-        age,
-    } = req.body;
-    const newId = users[users.length - 1].id + 1;
-    // ahora la img será un file y se recibe por req.file
-    const image = req.file ? req.file.filename : '';
-    let newImage;
-    if (image.length > 0){
-        newImage = `images/usuarios/${image}`
+    const errors = validationResult(req);
+    // errors es un objeto de express-validator
+    if (errors.isEmpty()) {
+        // recordar que los datos de un form se reciben a través de req.body
+        const {
+            name,
+            age,
+        } = req.body;
+        const newId = users[users.length - 1].id + 1;
+        // ahora la img será un file y se recibe por req.file
+        const image = req.file ? req.file.filename : '';
+        let newImage;
+        if (image.length > 0) {
+            newImage = `images/usuarios/${image}`
+        }
+        const obj = {
+            id: newId,
+            name,
+            age,
+            img: newImage,
+        };
+        users.push(obj);
+        res.redirect('/users');
+
+    } else {
+        res.render(path.join(__dirname, '../views/formNewUser'), {errors: errors.array(), values: req.body});
     }
-    const obj = {
-        id: newId,
-        name,
-        age,
-        img: newImage,
-    };
-    users.push(obj);
-    res.redirect('/users');
+
 }
 
 const userEdit = (req, res) => {
@@ -86,7 +95,9 @@ const deleteConfirm = (req, res) => {
     })
     res.redirect('/users')
 }
-
+const admin = (req, res) => {
+    res.render(path.join(__dirname, '../views/admin'))
+}
 module.exports = {
     getAllUsers,
     getUserId,
@@ -97,4 +108,5 @@ module.exports = {
     editConfirm,
     userDelete,
     deleteConfirm,
+    admin,
 };

@@ -1,10 +1,25 @@
 const express = require('express');
-const { getAllUsers, getUserId, search, formNewUser, postUser, userEdit, editConfirm, userDelete, deleteConfirm } = require('../controllers/userController');
+const { 
+    getAllUsers, 
+    getUserId, 
+    search, 
+    formNewUser, 
+    postUser, 
+    userEdit, 
+    editConfirm, 
+    userDelete, 
+    deleteConfirm, 
+    admin 
+} = require('../controllers/userController');
 const routerUser = express.Router();
-
+const isAdmin = require('../middlewares/adminMiddleware');
 const path = require('path');
 const multer = require('multer');
-
+const { body } = require('express-validator');
+const validateForm = [
+    body('name').notEmpty().withMessage('El nombre es requerido'),
+    body('age').notEmpty().withMessage('La edad es requerida'),
+]
 // configuraciones de multer
 const storage = multer.diskStorage({
     // destination es una función que determina el destino donde se guardarán los archivos que se suban
@@ -26,14 +41,16 @@ routerUser.get('/search', search);
 
 // rutas para agregar usuario
 routerUser.get('/new-user', formNewUser);
-routerUser.post('/new-user',upload.single('img'), postUser);
+routerUser.post('/new-user', upload.single('img'), validateForm, postUser);
 
 // rutas para editar usuarios
 routerUser.get('/user-edit/:id', userEdit);
-routerUser.put('/user-edit', editConfirm);
+routerUser.put('/user-edit',validateForm, editConfirm);
 
 // rutas para eliminar usuarios
 routerUser.get('/user-delete/:id', userDelete);
 routerUser.delete('/user-delete', deleteConfirm);
+
+routerUser.get('/admin',isAdmin, admin)
 
 module.exports = routerUser;

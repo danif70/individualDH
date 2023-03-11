@@ -4,6 +4,7 @@ const routerMain = require('./src/routes/main');
 const routerUser = require('./src/routes/user');
 // se instala method-override que permite modificar un método POST para poder usar PUT
 const methodOverride = require('method-override');
+const path = require('path');
 const port = process.env.PORT || 3001;
 
 const app = express();
@@ -21,5 +22,9 @@ app.use(methodOverride('_method'));
 
 app.use(routerMain);
 app.use(routerUser);
+
+app.use((req, res, next)=> {
+    res.status(404).render(path.join(__dirname, './src/views/not-found'));
+})
 
 app.listen(port, () => console.log(`servidor escuchando puerto ${port}`));
